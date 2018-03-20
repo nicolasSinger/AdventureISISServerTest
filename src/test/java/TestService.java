@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+import binding.ProductType;
+import binding.World;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -94,7 +96,8 @@ public class TestService {
     @Test
     public void checkBuyFirstProduct() {
         // teste si le serveur met à jour l'achat d'un produit au niveau de l'argent, et de la quantité
-      given().header("Accept","application/json").header("X-User",uniqueID).when().get(serviceUrl+"world");
+         World w = given().header("Accept","application/json").header("X-User",uniqueID).get(serviceUrl+"world").as(World.class);
+        assertEquals(w.getName(),"A Nice World");
     }
     
 }
