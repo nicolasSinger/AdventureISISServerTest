@@ -1,0 +1,108 @@
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+    
+    <xs:element name="world">
+         <xs:complexType>
+         <xs:sequence>
+            <!-- Titre du monde -->
+            <xs:element name="name" type="xs:string"/>
+            <!-- logo  du monde -->
+            <xs:element name="logo" type="xs:string"/>
+            <!-- argent actuel du joueur -->
+            <xs:element name="money" type="xs:double"/>
+            <!-- argent cumulé par le joueur depuis le début --> 
+            <xs:element name="score" type="xs:double"/> 
+            <!-- total cumulé des anges gagnés par le joueur lors de chaque reset -->
+            <xs:element name="totalangels" type="xs:double"/> 
+            <!-- nombre d'anges actifs (chiffre précédent moins les anges dépensés) -->
+            <xs:element name="activeangels" type="xs:double"/> 
+            <!-- bonus par ange (2% par défaut) -->
+            <xs:element name="angelbonus" type="xs:int"/> 
+            <!-- dernière mise à jour du monde par le serveur -->
+            <xs:element name="lastupdate" type="xs:long"/> 
+            <!-- liste des types de produit -->
+            <xs:element name="products" type="productsType"/> 
+            <!-- liste des seuils concernant tous les produits -->
+            <xs:element name="allunlocks" type="palliersType"/> 
+            <!-- liste des cash upgrades -->
+            <xs:element name="upgrades" type="palliersType"/> 
+            <!-- liste des angel upgrades -->
+            <xs:element name="angelupgrades" type="palliersType"/>
+            <!-- liste des managers -->
+            <xs:element name="managers" type="palliersType"/> 
+        </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+     
+    <xs:complexType name="productsType">
+        <xs:sequence>
+            <xs:element name="product" type="productType" minOccurs="2" maxOccurs="6"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="productType">
+        <xs:sequence>
+            <!-- identifiant unique du produit, à partir de 1  -->  
+            <xs:element name="id" type="xs:int"/> 
+            <!-- nom du produit -->
+            <xs:element name="name" type="xs:string"/> 
+            <!-- chemin relatif vers une image du produit -->
+            <xs:element name="logo" type="xs:string"/> 
+            <!-- cout d'achat initial du produit -->
+            <xs:element name="cout" type="xs:double"/>
+            <!-- multiplicateur d'augmentation du prix du produit par exemplaire, 
+                au format 1,xx, par exemple 1,07 indique une augmentation de 7%
+                par exemplaire.
+            -->
+            <xs:element name="croissance" type="xs:double"/> 
+            <!-- revenu actuel du produit -->
+            <xs:element name="revenu" type="xs:double"/> 
+            <!-- nombre de milli-secondes nécessaire pour créer le produit -->
+            <xs:element name="vitesse" type="xs:int"/> 
+             <!-- quantité actuelle du produit détenu par le joueur -->
+            <xs:element name="quantite" type="xs:int"/> 
+            <!-- temps restant pour terminer la création du produit en millisecondes -->
+            <xs:element name="timeleft" type="xs:long"/> 
+            <!-- booléen qui indique si le manager de ce produit est débloqué ou pas -->
+            <xs:element name="managerUnlocked" type="xs:boolean"/>   
+            <!-- liste des seuils propres à ce produit -->
+            <xs:element name="palliers" type="palliersType"/>   
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="palliersType">
+        <xs:sequence>
+            <xs:element name="pallier" type="pallierType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="pallierType">
+        <xs:sequence>
+            <!-- identifiant du pallier -->
+            <xs:element name="name" type="xs:string"/>
+            <!-- chemin relatif menant à une image représentative du pallier -->
+            <xs:element name="logo" type="xs:string"/> 
+            <!-- valeur du pallier à atteindre quand il s'agit d'un seuil, ou coût de l'upgrade sinon -->
+            <xs:element name="seuil" type="xs:int"/> 
+            <!-- produit cible de l'upgrade, 0 s'il s'agit de tous les produits, -1 si c'est un effet sur un ange -->
+            <xs:element name="idcible" type="xs:int"/> 
+            <!-- bonus obtenu sous la forme d'un multiplicateur de vitesse ou de revenu, ou de pourcentage d'ange -->
+            <xs:element name="ratio" type="xs:double"/> 
+            <!-- type de bonus parmi VITESSE, GAIN, ou ANGE -->
+            <xs:element name="typeratio" type="typeratioType"/> 
+            <!-- indicateur de débloquage de ce pallier -->
+            <xs:element name="unlocked" type="xs:boolean"/> 
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="typeratioType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="vitesse"/>
+            <xs:enumeration value="gain"/> 
+            <xs:enumeration value="ange"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+</xs:schema>
